@@ -142,7 +142,7 @@ def main():
   
   plt.xlabel('Model')
   plt.ylabel('Accuracy (%)')
-  plt.title('Oversample')
+  plt.title('Tunning + Oversample + Normalization')
   plt.xticks(rotation=45, ha='right')
 
   for bar in bars:
@@ -164,7 +164,7 @@ def main():
 )
 
   st.title('Hungarian Heart Disease')
-  st.write(f'Models KNN :green[**{accuracy_knn}**]% + Random Forest :green[**{accuracy_rf}**]% + XGBOOST :green[**{accuracy_xgb}**]% (Tunning + Normalization)')
+  st.write(f'Models KNN :green[**{accuracy_knn}**]% + Random Forest :green[**{accuracy_rf}**]% + XGBOOST :green[**{accuracy_xgb}**]% (Tunning + Oversample + Normalization)')
   st.write('')
     
   st.image(image, caption='model tunning normalization graph accuracy')
