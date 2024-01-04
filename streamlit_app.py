@@ -296,6 +296,8 @@ def main():
       
       
       def test(name, model, x):
+        
+        # model prediction
         prediction = model.predict(x)[0]
 
         bar = st.progress(0)
@@ -314,10 +316,10 @@ def main():
         score = round(prediction)
         status = [
           ':green[**Healthy**]',
-          ':orange[**Heart Disease level 1**]',
-          ':orange[**Heart Disease level 2**]',
-          ':red[**Heart Disease level 3**]',
-          ':red[**Heart Disease level 4**]',
+          ':orange[**Heart Disease Level 1**]',
+          ':orange[**Heart Disease Level 2**]',
+          ':red[**Heart Disease Level 3**]',
+          ':red[**Heart Disease Level 4**]',
         ][score]
 
         st.write('')
@@ -343,6 +345,11 @@ def main():
       uploaded_df = pd.read_csv(file_uploaded)
       
       def test(model, x):
+        
+        # normalization
+        x = scaler.fit_transform(x)
+        
+        # model prediction
         prediction_arr = model.predict(x)
 
         bar = st.progress(0)
@@ -358,11 +365,11 @@ def main():
         for prediction in prediction_arr:
           score = round(prediction)
           status = [
-            ':green[**Healthy**]',
-            ':orange[**Heart Disease level 1**]',
-            ':orange[**Heart Disease level 2**]',
-            ':red[**Heart Disease level 3**]',
-            ':red[**Heart Disease level 4**]',
+            'Healthy',
+            'Heart Disease Level 1',
+            'Heart Disease Level 2',
+            'Heart Disease Level 3',
+            'Heart Disease Level 4',
           ][score]
           
           result.append(status)
@@ -379,10 +386,11 @@ def main():
         
         return result
 
+      inputs = uploaded_df.values
       uploaded_result = pd.DataFrame({
-        'Prediction (KNN)': test(knn_model_tun_norm, uploaded_df),
-        'Prediction (Random Forest)': test(rf_model_tun_norm, uploaded_df),
-        'Prediction (XGBOOST)': test(xgb_model_tun_norm, uploaded_df),
+        'Prediction (KNN)': test(knn_model_tun_norm, inputs),
+        'Prediction (Random Forest)': test(rf_model_tun_norm, inputs),
+        'Prediction (XGBOOST)': test(xgb_model_tun_norm, inputs),
       })
 
       col1, col2 = st.columns([1, 2])
