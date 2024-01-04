@@ -366,6 +366,16 @@ def main():
           ][score]
           
           result.append(status)
+          
+        for i in range(70, 101):
+          status_text.text(f'{i}% complete')
+          bar.progress(i)
+          time.sleep(0.01)
+          
+          if i == 100:
+            time.sleep(1)
+            status_text.empty()
+            bar.empty()
         
         return result
 
@@ -374,16 +384,6 @@ def main():
         'Prediction (Random Forest)': test(rf_model_tun_norm, uploaded_df),
         'Prediction (XGBOOST)': test(xgb_model_tun_norm, uploaded_df),
       })
-
-      for i in range(70, 101):
-        status_text.text(f'{i}% complete')
-        bar.progress(i)
-        time.sleep(0.01)
-        
-        if i == 100:
-          time.sleep(1)
-          status_text.empty()
-          bar.empty()
 
       col1, col2 = st.columns([1, 2])
 
