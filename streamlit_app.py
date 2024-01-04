@@ -295,8 +295,8 @@ def main():
       inputs = [[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak]]
       
       
-      def test(name, model):
-        prediction = model.predict(inputs)[0]
+      def test(name, model, x):
+        prediction = model.predict(x)[0]
 
         bar = st.progress(0)
         status_text = st.empty()
@@ -305,6 +305,7 @@ def main():
           status_text.text(f'{i}% complete')
           bar.progress(i)
           time.sleep(0.01)
+          
           if i == 100:
             time.sleep(1)
             status_text.empty()
@@ -322,9 +323,9 @@ def main():
         st.write('')
         st.subheader(f'Prediction ({name}): {status}')
         
-      test('KNN', knn_model_tun_norm)
-      test('Random Forest', rf_model_tun_norm)
-      test('XGBOOST', xgb_model_tun_norm)
+      test('KNN', knn_model_tun_norm, inputs)
+      test('Random Forest', rf_model_tun_norm, inputs)
+      test('XGBOOST', xgb_model_tun_norm, inputs)
   
   with multi_predict_tab:
     st.header('Predict multiple data:')
@@ -340,37 +341,45 @@ def main():
 
     if file_uploaded:
       uploaded_df = pd.read_csv(file_uploaded)
-      prediction_arr = model.predict(uploaded_df)
+      
+      def test(model, x):
+        prediction_arr = model.predict(x)
 
-      bar = st.progress(0)
-      status_text = st.empty()
+        bar = st.progress(0)
+        status_text = st.empty()
 
-      for i in range(1, 70):
-        status_text.text(f'{i}% complete')
-        bar.progress(i)
-        time.sleep(0.01)
+        for i in range(1, 70):
+          status_text.text(f'{i}% complete')
+          bar.progress(i)
+          time.sleep(0.01)
 
-      result_arr = []
+        result = []
 
-      for prediction in prediction_arr:
-        if prediction == 0:
-          result = 'Healthy'
-        elif prediction == 1:
-          result = 'Heart disease level 1'
-        elif prediction == 2:
-          result = 'Heart disease level 2'
-        elif prediction == 3:
-          result = 'Heart disease level 3'
-        elif prediction == 4:
-          result = 'Heart disease level 4'
-        result_arr.append(result)
+        for prediction in prediction_arr:
+          score = round(prediction)
+          status = [
+            ':green[**Healthy**]',
+            ':orange[**Heart Disease level 1**]',
+            ':orange[**Heart Disease level 2**]',
+            ':red[**Heart Disease level 3**]',
+            ':red[**Heart Disease level 4**]',
+          ][score]
+          
+          result.append(status)
+        
+        return result
 
-      uploaded_result = pd.DataFrame({'Prediction Result': result_arr})
+      uploaded_result = pd.DataFrame({
+        'Prediction (KNN)': test(knn_model_tun_norm, uploaded_df),
+        'Prediction (Random Forest)': test(rf_model_tun_norm, uploaded_df),
+        'Prediction (XGBOOST)': test(xgb_model_tun_norm, uploaded_df),
+      })
 
       for i in range(70, 101):
         status_text.text(f'{i}% complete')
         bar.progress(i)
         time.sleep(0.01)
+        
         if i == 100:
           time.sleep(1)
           status_text.empty()
@@ -380,6 +389,7 @@ def main():
 
       with col1:
         st.dataframe(uploaded_result)
+        
       with col2:
         st.dataframe(uploaded_df)
 
