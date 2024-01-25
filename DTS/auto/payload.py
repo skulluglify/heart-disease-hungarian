@@ -797,6 +797,35 @@ def save_best_model(best_model_data: Mapping[str, Any], filename: str = 'best_mo
         joblib.dump(best_model_data, fstream)
 
 
+def op(df: pd.DataFrame, column_name_target: str) -> Tuple[Mapping[str, Any], pd.DataFrame]:
+
+    refs = auto_mapping_data(df)
+
+    show_data_part(df)
+    auto_set_or_drop(df)
+    show_data_part(df)
+
+    x, y = make_xy(df, column_name_target)
+    choices = make_choices(x, y)
+    show_comparison_from_choices(choices)
+    show_data_pca_from_choices(choices)
+
+    results = train_models(models, choices, test_size=0.2, n_splits=4)
+    comparison = get_comparison_from_results(results)
+    plot_comparison(comparison)
+
+    rank = make_rank_from_comparison(comparison)
+
+    best_model_data, model_selected, choice_selected, max_score = best_model_from_results(results)
+
+    show_confusion_matrix_from_best_model(model_selected, choice_selected)
+
+    best_model_data['refs'] = refs
+    pprint(best_model_data)
+
+    return rank, best_model_data
+
+
 print('   ____   _   _  __  __   ____   ____      ____    ____ __  __     ____ __  __ ____   ____  _  ____  ')
 print('  / () \ | |_| ||  \/  | / () \ | _) \    / () \  (_ (_`\ \/ /    (_ (_`\ \/ // () \ | ===|| |/ () \ ')
 print(' /__/\__\|_| |_||_|\/|_|/__/\__\|____/   /__/\__\.__)__) |__|    .__)__) |__|/__/\__\|__|  |_|\____/=')
