@@ -340,7 +340,7 @@ def show_comparison_from_choices(choices: Choices):
         raise Exception('something goes wrong, i can feel it')
 
     df_y = pd.DataFrame(data=y)
-    df_y_max = df_y.value_counts().max() + 10
+    df_y_max = math.floor(df_y.value_counts().max() * 1.1)
 
     fig, ax = plt.subplots(3, 2)
 
@@ -827,8 +827,12 @@ def op(df: pd.DataFrame, column_name_target: str) -> Tuple[Mapping[str, Any], pd
 
 
 def banner():
-    print('   ____   _   _  __  __   ____   ____      ____    ____ __  __     ____ __  __ ____   ____  _  ____  ')
-    print('  / () \ | |_| ||  \/  | / () \ | _) \    / () \  (_ (_`\ \/ /    (_ (_`\ \/ // () \ | ===|| |/ () \ ')
-    print(' /__/\__\|_| |_||_|\/|_|/__/\__\|____/   /__/\__\.__)__) |__|    .__)__) |__|/__/\__\|__|  |_|\____/=')
-    print('')
-    print('Copyright by Ahmad Asy Syafiq, Payload Script For Data Science 2023/2024')
+    context = '' +\
+    '   ____   _   _  __  __   ____   ____      ____    ____ __  __     ____ __  __ ____   ____  _  ____  ' +\
+    '  / () \ | |_| ||  \/  | / () \ | _) \    / () \  (_ (_`\ \/ /    (_ (_`\ \/ // () \ | ===|| |/ () \ ' +\
+    ' /__/\__\|_| |_||_|\/|_|/__/\__\|____/   /__/\__\.__)__) |__|    .__)__) |__|/__/\__\|__|  |_|\____/=' +\
+    '                                                                                                     ' +\
+    'Copyright by Ahmad Asy Syafiq, Payload Script For Data Science 2023/2024                             '
+    
+    print(context)
+    return context
