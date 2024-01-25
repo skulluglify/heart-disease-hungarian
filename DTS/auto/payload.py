@@ -826,8 +826,9 @@ def op(df: pd.DataFrame, column_name_target: str) -> Tuple[Mapping[str, Any], pd
     return rank, best_model_data
 
 
-print('   ____   _   _  __  __   ____   ____      ____    ____ __  __     ____ __  __ ____   ____  _  ____  ')
-print('  / () \ | |_| ||  \/  | / () \ | _) \    / () \  (_ (_`\ \/ /    (_ (_`\ \/ // () \ | ===|| |/ () \ ')
-print(' /__/\__\|_| |_||_|\/|_|/__/\__\|____/   /__/\__\.__)__) |__|    .__)__) |__|/__/\__\|__|  |_|\____/=')
-print('')
-print('Copyright by Ahmad Asy Syafiq, Payload Script For Data Science 2023/2024')
+def banner():
+    print('   ____   _   _  __  __   ____   ____      ____    ____ __  __     ____ __  __ ____   ____  _  ____  ')
+    print('  / () \ | |_| ||  \/  | / () \ | _) \    / () \  (_ (_`\ \/ /    (_ (_`\ \/ // () \ | ===|| |/ () \ ')
+    print(' /__/\__\|_| |_||_|\/|_|/__/\__\|____/   /__/\__\.__)__) |__|    .__)__) |__|/__/\__\|__|  |_|\____/=')
+    print('')
+    print('Copyright by Ahmad Asy Syafiq, Payload Script For Data Science 2023/2024')
